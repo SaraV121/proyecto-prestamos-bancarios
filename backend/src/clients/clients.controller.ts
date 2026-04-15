@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, Param, Put } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
+
 
 @Controller('clients')
 export class ClientsController {
@@ -15,6 +16,11 @@ export class ClientsController {
   findAll() {
     return this.clientsService.findAll();
   }
+
+  @Put(':id')
+update(@Param('id') id: string, @Body() data: CreateClientDto) {
+  return this.clientsService.update(+id, data);
+}
 
   @Delete(':id')
   remove(@Param('id') id: string) {

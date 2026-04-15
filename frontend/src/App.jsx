@@ -3,6 +3,7 @@ import axios from 'axios';
 
 function App() {
   const [clients, setClients] = useState([]);
+  const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({
     nombre: '',
     apellido: '',
@@ -29,29 +30,51 @@ function App() {
   };
 
   const createClient = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    await axios.post('http://localhost:3000/clients', {
+  if (editingId) {
+    await axios.put(`http://localhost:3000/clients/${editingId}`, {
       ...form,
       ingresos: Number(form.ingresos),
     });
 
-    setForm({
-      nombre: '',
-      apellido: '',
-      ci: '',
-      telefono: '',
-      direccion: '',
-      ingresos: '',
+    setEditingId(null);
+  } else {
+    await axios.post('http://localhost:3000/clients', {
+      ...form,
+      ingresos: Number(form.ingresos),
     });
+  }
 
-    getClients();
-  };
+  setForm({
+    nombre: '',
+    apellido: '',
+    ci: '',
+    telefono: '',
+    direccion: '',
+    ingresos: '',
+  });
+
+  getClients();
+};
 
   const deleteClient = async (id) => {
     await axios.delete(`http://localhost:3000/clients/${id}`);
     getClients();
   };
+
+  const editClient = (client) => {
+  setEditingId(client.id);
+
+  setForm({
+    nombre: client.nombre,
+    apellido: client.apellido,
+    ci: client.ci,
+    telefono: client.telefono,
+    direccion: client.direccion,
+    ingresos: client.ingresos,
+  });
+};
 
   return (
     <div style={{ padding: '20px' }}>
@@ -134,6 +157,14 @@ function App() {
           <p>CI: {client.ci}</p>
           <p>Teléfono: {client.telefono}</p>
           <p>Ingresos: {client.ingresos}</p>
+
+          <button type="submit">
+            {editingId ? 'Actualizar Cliente' : 'Guardar Cliente'}
+          </button>
+
+          <button onClick={() => editClient(client)}>
+            Editar
+          </button>
 
           <button onClick={() => deleteClient(client.id)}>
             Eliminar
