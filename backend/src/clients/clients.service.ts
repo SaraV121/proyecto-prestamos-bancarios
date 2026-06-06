@@ -6,27 +6,42 @@ import { CreateClientDto } from './dto/create-client.dto';
 
 @Injectable()
 export class ClientsService {
+
   constructor(
     @InjectRepository(Client)
     private clientRepository: Repository<Client>,
   ) {}
 
+  async deleteLogic(id: number) {
+
+    return this.clientRepository.update(
+      id,
+      {
+        isDeleted: true,
+      }
+    );
+
+  }
+
   create(data: CreateClientDto) {
-  const client = this.clientRepository.create(data);
-  return this.clientRepository.save(client);
-}
+    const client = this.clientRepository.create(data);
+    return this.clientRepository.save(client);
+  }
 
-findAll() {
-  return this.clientRepository.find({
-    where: { isDeleted: false },
-  });
-}
+  findAll() {
+    return this.clientRepository.find({
+      where: { isDeleted: false },
+    });
+  }
 
-update(id: number, data: CreateClientDto) {
-  return this.clientRepository.update(id, data);
-}
+  update(id: number, data: CreateClientDto) {
+    return this.clientRepository.update(id, data);
+  }
 
-remove(id: number) {
-  return this.clientRepository.update(id, { isDeleted: true });
-}
+  remove(id: number) {
+    return this.clientRepository.update(id, {
+      isDeleted: true,
+    });
+  }
+
 }

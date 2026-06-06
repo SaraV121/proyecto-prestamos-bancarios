@@ -18,8 +18,12 @@ export class ClientsController {
   }
 
   @Put(':id')
-update(@Param('id') id: string, @Body() data: CreateClientDto) {
-  return this.clientsService.update(+id, data);
+  update(@Param('id') id: string, @Body() data: CreateClientDto) {
+  return this.clientsService.update(+id, data);}
+
+  @Put('delete/:id')
+  deleteLogic(@Param('id') id: string) {
+  return this.clientsService.deleteLogic(+id);
 }
 
   @Delete(':id')
