@@ -24,6 +24,35 @@ export class UsersService {
   }
 
   findByCorreo(correo: string) {
-    return this.userRepository.findOne({ where: { correo } });
+    return this.userRepository.findOne({
+      where: { correo },
+    });
+  }
+
+  async createAdmin() {
+
+    const admin = await this.userRepository.findOne({
+      where: {
+        correo: 'admin@banco.com',
+      },
+    });
+
+    if (admin) {
+      return;
+    }
+
+    const hashedPassword = await bcrypt.hash(
+      'Admin123*',
+      10,
+    );
+
+    const newAdmin = this.userRepository.create({
+      nombre: 'Administrador',
+      correo: 'admin@banco.com',
+      password: hashedPassword,
+      rol: 'admin',
+    });
+
+    await this.userRepository.save(newAdmin);
   }
 }

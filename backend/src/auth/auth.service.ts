@@ -30,6 +30,14 @@ export class AuthService {
         correo: user.correo,
         rol: user.rol,
       }),
+      rol: user.rol,
+      
+      user: {
+        id: user.id,
+        nombre: user.nombre,
+        correo: user.correo,
+        rol: user.rol,
+      },
     };
   }
 }

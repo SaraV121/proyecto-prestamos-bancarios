@@ -1,14 +1,60 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import ReCAPTCHA from 'react-google-recaptcha';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function App() {
 
   // =========================
   // STATES
   // =========================
-
+  const [rol, setRol] = useState('');
   const [clients, setClients] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [loans, setLoans] = useState([]);
+  const [logs, setLogs] = useState([]);
+
+
+  const prestamosAprobados = loans.filter(
+  loan => loan.estado === 'Aprobado'
+).length;
+
+const prestamosPendientes = loans.filter(
+  loan => loan.estado === 'Pendiente'
+).length;
+
+const prestamosRechazados = loans.filter(
+  loan => loan.estado === 'Rechazado'
+).length;
+
+  const [loanForm, setLoanForm] = useState({
+  cliente: '',
+  monto: '',
+  plazo: '',
+  estado: 'Pendiente',});
+  
 
   const [form, setForm] = useState({
     nombre: '',
@@ -63,6 +109,94 @@ function App() {
 
   };
 
+   //=========================
+  // CHART DATA
+  //=========================
+
+  const chartData = {
+  labels: clients.map(client => client.nombre),
+
+  datasets: [
+    {
+      label: 'Ingresos',
+      data: clients.map(client => client.ingresos),
+      backgroundColor: 'rgba(37, 99, 235, 0.8)',
+    },
+  ],
+};
+
+const loansChartData = {
+
+  labels: [
+    'Aprobados',
+    'Pendientes',
+    'Rechazados',
+  ],
+
+  datasets: [
+    {
+      label: 'Préstamos',
+
+      data: [
+        prestamosAprobados,
+        prestamosPendientes,
+        prestamosRechazados,
+      ],
+
+      backgroundColor: [
+        '#22c55e',
+        '#f59e0b',
+        '#ef4444',
+      ],
+    },
+  ],
+};
+
+// =========================
+// PESTAMOS
+// =========================
+
+const getLoans = async () => {
+
+  const response = await axios.get(
+    'http://localhost:3000/loans'
+  );
+
+  setLoans(response.data);
+};
+
+const createLoan = async (e) => {
+
+  e.preventDefault();
+
+  await axios.post(
+    'http://localhost:3000/loans',
+    {
+      ...loanForm,
+      monto: Number(loanForm.monto),
+      plazo: Number(loanForm.plazo),
+    }
+  );
+
+  getLoans();
+};
+
+ // =========================
+  // Logs de acceso
+  // =========================
+
+  const getLogs = async () => {
+
+  const response = await axios.get(
+    'http://localhost:3000/logs'
+  );
+
+  setLogs(response.data);
+
+};
+
+
+
   // =========================
   // LOGIN
   // =========================
@@ -79,6 +213,11 @@ function App() {
 
   if (!emailRegex.test(correo)) {
     alert('Correo inválido');
+    return;
+  }
+
+  if (!captchaToken) {
+    alert('Complete el CAPTCHA');
     return;
   }
 
@@ -99,9 +238,21 @@ function App() {
       res.data.token
     );
 
-    setIsLogged(true);
+    localStorage.setItem(
+  'usuario',
+  correo
+);
 
-  } catch {
+    localStorage.setItem(
+      'rol',
+      res.data.rol
+    );
+    setRol(res.data.rol);
+
+    setIsLogged(true);
+     alert('Login exitoso');
+
+  } catch(error)  {
 
     alert('Error en login');
 
@@ -158,13 +309,15 @@ function App() {
 
   useEffect(() => {
 
-    const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
+  const rolGuardado = localStorage.getItem('rol');
+  
 
-    if (token) {
-      setIsLogged(true);
-    }
-
-  }, []);
+  if (token) {
+    setIsLogged(true);
+    setRol(rolGuardado);
+  }
+}, []);
 
   // =========================
   // GET CLIENTS
@@ -184,6 +337,8 @@ function App() {
 
     if (isLogged) {
       getClients();
+      getLoans();
+      getLogs();
     }
 
   }, [isLogged]);
@@ -200,6 +355,18 @@ function App() {
     });
 
   };
+
+
+  // =========================
+  // CAPTCHA
+  // =========================
+  const handleCaptcha = (token) => {
+    setCaptchaToken(token);
+  
+  };
+
+  
+
 
   // =========================
   // CREATE / UPDATE CLIENT
@@ -287,7 +454,14 @@ function App() {
     try {
 
       await axios.put(
-        `http://localhost:3000/clients/delete/${id}`
+        `http://localhost:3000/clients/delete/${id}`,
+        {},
+        {
+          headers: {
+            Authorization:
+            `Bearer ${token}`,
+          },
+        }
       );
 
       alert('Cliente eliminado');
@@ -301,6 +475,186 @@ function App() {
     }
 
   };
+
+  // =========================
+  // GENERAR PDF
+  // =========================
+
+  const generarPDFPrestamos = () => {
+
+  const doc = new jsPDF();
+
+  doc.setFillColor(15, 23, 42);
+  doc.rect(0, 0, 210, 30, 'F');
+
+  doc.setTextColor(255, 255, 255);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+
+  doc.text(
+    'PRESTAMOS BANCARIOS',
+    105,
+    15,
+    { align: 'center' }
+  );
+
+  doc.setFontSize(12);
+
+  doc.text(
+    'Reporte Oficial de Prestamos',
+    105,
+    24,
+    { align: 'center' }
+  );
+
+  doc.setTextColor(0, 0, 0);
+
+  doc.text(
+    `Fecha: ${new Date().toLocaleDateString()}`,
+    14,
+    45
+  );
+
+  doc.text(
+    `Total de Prestamos: ${loans.length}`,
+    14,
+    55
+  );
+
+  autoTable(doc, {
+
+    startY: 70,
+
+    head: [[
+      'ID',
+      'Cliente',
+      'Monto',
+      'Plazo',
+      'Estado'
+    ]],
+
+    body: loans.map(loan => [
+      loan.id,
+      loan.cliente,
+      `Bs. ${loan.monto}`,
+      `${loan.plazo} meses`,
+      loan.estado
+    ]),
+
+    headStyles: {
+      fillColor: [30, 64, 175],
+    },
+
+  });
+  doc.setFontSize(10);
+
+  doc.text(
+  'Generado automaticamente por el Sistema de Prestamos Bancarios',
+  105,
+  285,
+  { align: 'center' }
+);
+
+  doc.save(
+    'reporte_prestamos.pdf'
+  );
+
+};
+
+  const generarPDF = () => {
+
+  const doc = new jsPDF();
+
+  // Encabezado
+  doc.setFillColor(15, 23, 42);
+  doc.rect(0, 0, 210, 30, 'F');
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.text('PRESTAMOS BANCARIOS', 105, 15, {
+    align: 'center',
+  });
+
+  doc.setFontSize(12);
+  doc.text('Reporte Oficial de Clientes', 105, 24, {
+    align: 'center',
+  });
+
+  
+  doc.setTextColor(0, 0, 0);
+
+  doc.setFontSize(11);
+
+  doc.text(
+    `Fecha: ${new Date().toLocaleDateString()}`,
+    14,
+    45
+  );
+
+  doc.text(
+    `Hora: ${new Date().toLocaleTimeString()}`,
+    14,
+    52
+  );
+
+  doc.text(
+    `Total de Clientes: ${clients.length}`,
+    14,
+    59
+  );
+
+  autoTable(doc, {
+    startY: 70,
+
+    head: [[
+      'ID',
+      'Nombre',
+      'Apellido',
+      'CI',
+      'Telefono',
+      'Ingresos'
+    ]],
+
+    body: clients.map(client => [
+      client.id,
+      client.nombre,
+      client.apellido,
+      client.ci,
+      client.telefono,
+      `Bs. ${client.ingresos}`
+    ]),
+
+    headStyles: {
+      fillColor: [30, 64, 175],
+      fontStyle: 'bold',
+      halign: 'center',
+    },
+
+    styles: {
+      fontSize: 10,
+      cellPadding: 3,
+    },
+
+    alternateRowStyles: {
+      fillColor: [240, 240, 240],
+    },
+  });
+  doc.setFontSize(10);
+
+  
+
+doc.text(
+  'Generado automaticamente por el Sistema de Prestamos Bancarios',
+  105,
+  285,
+  { align: 'center' }
+);
+
+  doc.save('reporte_clientes.pdf');
+  
+};
 
   // =========================
   // EDIT CLIENT
@@ -329,7 +683,7 @@ function App() {
 
     return (
 
-      <div style={loginContainer}>
+      <div style={loginContainer }>
 
         <div style={loginCard}>
 
@@ -418,6 +772,32 @@ function App() {
             }
             style={inputStyle}
           />
+          <label>
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={(e) =>
+                setShowPassword(e.target.checked)
+              }
+            />
+            Mostrar contraseña
+          </label>
+
+          <br /><br />
+          <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '15px',
+            marginBottom: '20px',
+            }}
+          >
+
+          <ReCAPTCHA
+          sitekey="6Lfqb7YsAAAAADyM1g7gpjMrOW7n6MYLGifXXov6"
+          onChange={handleCaptcha}
+          />
+          </div>
 
           <button
             onClick={login}
@@ -454,7 +834,7 @@ function App() {
           style={menuButton}
           onClick={() => setSection('dashboard')}
         >
-          Dashboard
+          Panel
         </button>
 
         <button
@@ -489,15 +869,65 @@ function App() {
           style={menuButton}
           onClick={() => setSection('logs')}
         >
-          Logs
+          Registros
         </button>
 
         <button
+        
           style={logoutStyle}
-          onClick={() => {
-            localStorage.removeItem('token');
-            setIsLogged(false);
-          }}
+          onClick={async () => {
+
+  try {
+
+     console.log('Registrando salida...');
+
+    await axios.post(
+      'http://localhost:3000/logs',
+      {
+        usuario:
+          localStorage.getItem('usuario'),
+
+        ip: '::1',
+
+        navegador:
+          navigator.userAgent,
+
+        evento: 'Salida',
+
+        fechaHora:
+          new Date(),
+      }
+    );
+
+     console.log('Salida registrada');
+
+  } catch (error) {
+
+    console.error(
+      'Error al guardar log',
+      error
+    );
+
+  }
+
+  localStorage.removeItem('token');
+  localStorage.removeItem('rol');
+  localStorage.removeItem('usuario');
+
+  setCorreo('');
+  setLoginPassword('');
+
+  setNombreUsuario('');
+  setCorreoRegistro('');
+  setPasswordRegistro('');
+
+  setStrength('');
+  setCaptchaToken('');
+
+  setIsLogged(false);
+  setRol('');
+
+}}
         >
           Cerrar sesión
         </button>
@@ -512,13 +942,18 @@ function App() {
           Sistema de Préstamos Bancarios
         </h1>
 
+        <p>
+          Rol actual:
+          <strong> {rol}</strong>
+        </p>
+
         {/* DASHBOARD */}
 
         {section === 'dashboard' && (
 
           <div style={cardStyle}>
 
-            <h2>Dashboard</h2>
+            <h2>Panel de Control</h2>
 
             <p>
               Bienvenido al sistema bancario.
@@ -637,12 +1072,14 @@ function App() {
                     Editar
                   </button>
 
-                  <button
+                  {rol === 'admin' && (
+                    <button
                     onClick={() => deleteClient(client.id)}
                     style={deleteStyle}
-                  >
-                    Eliminar
-                  </button>
+                    >
+                      Eliminar
+                      </button>
+                    )}
 
                 </div>
 
@@ -657,30 +1094,293 @@ function App() {
         {/* OTRAS SECCIONES */}
 
         {section === 'prestamos' && (
-          <div style={cardStyle}>
-            <h2>Préstamos</h2>
-            <p>Próximamente...</p>
-          </div>
-        )}
+  <div style={cardStyle}>
+
+    <h2>Préstamos</h2>
+
+    <form onSubmit={createLoan}>
+
+      {/* CLIENTE */}
+      <select
+        value={loanForm.cliente}
+        onChange={(e) =>
+          setLoanForm({
+            ...loanForm,
+            cliente: e.target.value
+          })
+        }
+        style={inputStyle}
+      >
+        <option value="">
+          Seleccionar Cliente
+        </option>
+
+        {clients.map(client => (
+          <option
+            key={client.id}
+            value={`${client.nombre} ${client.apellido}`}
+          >
+            {client.nombre} {client.apellido}
+          </option>
+        ))}
+      </select>
+
+      {/* MONTO */}
+      <input
+        type="number"
+        placeholder="Monto"
+        value={loanForm.monto}
+        onChange={(e) =>
+          setLoanForm({
+            ...loanForm,
+            monto: e.target.value
+          })
+        }
+        style={inputStyle}
+      />
+
+      {/* PLAZO */}
+      <input
+        type="number"
+        placeholder="Plazo (meses)"
+        value={loanForm.plazo}
+        onChange={(e) =>
+          setLoanForm({
+            ...loanForm,
+            plazo: e.target.value
+          })
+        }
+        style={inputStyle}
+      />
+
+      {/* ESTADO */}
+      <select
+        value={loanForm.estado}
+        onChange={(e) =>
+          setLoanForm({
+            ...loanForm,
+            estado: e.target.value
+          })
+        }
+        style={inputStyle}
+      >
+        <option>Pendiente</option>
+        <option>Aprobado</option>
+        <option>Rechazado</option>
+      </select>
+
+      <button
+        type="submit"
+        style={buttonStyle}
+      >
+        Guardar Préstamo
+      </button>
+
+    </form>
+
+    <hr style={{ margin: '30px 0' }} />
+
+    <h2>Préstamos Registrados</h2>
+
+    {loans.map((loan) => (
+
+      <div
+        key={loan.id}
+        style={{
+          background: '#1e293b',
+          padding: '15px',
+          marginBottom: '15px',
+          borderRadius: '10px',
+        }}
+      >
+
+        <p>
+          <strong>Cliente:</strong> {loan.cliente}
+        </p>
+
+        <p>
+          <strong>Monto:</strong> Bs. {loan.monto}
+        </p>
+
+        <p>
+          <strong>Plazo:</strong> {loan.plazo} meses
+        </p>
+
+        <p>
+          <strong>Estado:</strong> {loan.estado}
+        </p>
+
+      </div>
+
+    ))}
+
+  </div>
+)}
 
         {section === 'reportes' && (
           <div style={cardStyle}>
             <h2>Reportes PDF</h2>
-            <p>Aquí irá el reporte PDF.</p>
+            <button
+            onClick={generarPDF}
+            style={buttonStyle}
+            >
+              📄 Generar Reporte Clientes
+            </button>
+
+            <br /><br />
+            <button
+            onClick={generarPDFPrestamos}
+            style={buttonStyle}>
+              📄 Generar Reporte Préstamos
+            </button>
           </div>
         )}
 
         {section === 'estadisticas' && (
-          <div style={cardStyle}>
-            <h2>Estadísticas</h2>
-            <p>Aquí irán los gráficos.</p>
-          </div>
-        )}
+
+  <div style={cardStyle}>
+
+    <h2>Estadísticas</h2>
+
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns:
+          'repeat(4, 1fr)',
+        gap: '15px',
+        marginBottom: '30px',
+      }}
+    >
+
+      <div style={statCard}>
+        <h3>Clientes</h3>
+        <h2>{clients.length}</h2>
+      </div>
+
+      <div style={statCard}>
+        <h3>Préstamos</h3>
+        <h2>{loans.length}</h2>
+      </div>
+
+      <div style={statCard}>
+        <h3>Aprobados</h3>
+        <h1>{prestamosAprobados}</h1>
+      </div>
+
+      <div style={statCard}>
+        <h3>Pendientes</h3>
+        <h1>{prestamosPendientes}</h1>
+      </div>
+
+    </div>
+
+    <h2>Ingresos por Cliente</h2>
+
+    <div
+  style={{
+    maxWidth: '100%',
+    overflowX: 'auto',
+  }}
+>
+  <Bar
+    data={chartData}
+  />
+</div>
+
+    <br />
+    <br />
+
+    <h2>Estado de Préstamos</h2>
+
+    <Bar data={loansChartData} />
+
+  </div>
+
+)}
 
         {section === 'logs' && (
           <div style={cardStyle}>
-            <h2>Logs de Acceso</h2>
-            <p>Aquí verás ingresos y salidas.</p>
+            <h2>Registros de Acceso</h2>
+            
+            <table
+      style={{
+        width: '100%',
+        borderCollapse: 'collapse',
+        overflowX: 'auto',
+      }}
+    >
+      
+
+      <thead>
+
+        <tr>
+          <th style={thStyle}>
+            Navegador
+          </th>
+
+          <th style={thStyle}>
+            Usuario
+          </th>
+
+          <th style={thStyle}>
+            Evento
+          </th>
+
+          <th style={thStyle}>
+            IP
+          </th>
+
+          <th style={thStyle}>
+            Fecha
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        {logs.map((log) => (
+
+          <tr key={log.id}>
+
+            <td style={tdStyle}>
+  {log.navegador.includes('Chrome')
+    ? 'Chrome'
+    : log.navegador.includes('Firefox')
+    ? 'Firefox'
+    : log.navegador.includes('Edge')
+    ? 'Edge'
+    : 'Otro'}
+</td>
+
+            <td style={tdStyle}>
+              {log.usuario}
+            </td>
+
+            <td style={tdStyle}>
+              {log.evento === 'Ingreso'
+              ? '🟢 Ingreso'
+              : '🔴 Salida'}
+            </td>
+
+            <td style={tdStyle}>
+              {log.ip}
+            </td>
+
+            <td style={tdStyle}>
+              {new Date(
+                log.fechaHora
+              ).toLocaleString()}
+            </td>
+
+          </tr>
+
+        ))}
+
+      </tbody>
+
+    </table>
           </div>
         )}
 
@@ -700,6 +1400,7 @@ const loginContainer = {
   background: '#0f172a',
   minHeight: '100vh',
   display: 'flex',
+  flexWrap: 'wrap',
   justifyContent: 'center',
   alignItems: 'center',
 };
@@ -721,7 +1422,9 @@ const mainContainer = {
 };
 
 const sidebarStyle = {
-  width: '250px',
+  width: window.innerWidth < 768
+    ? '100%'
+    : '250px',
   background: '#1e293b',
   padding: '20px',
   display: 'flex',
@@ -803,6 +1506,33 @@ const logoutStyle = {
   border: 'none',
   borderRadius: '10px',
   cursor: 'pointer',
+};
+
+const statCard = {
+
+  background: '#1e293b',
+
+  padding: '12px',
+
+  borderRadius: '12px',
+
+  textAlign: 'center',
+
+  boxShadow:
+    '0 0 10px rgba(0,0,0,0.3)',
+
+};
+
+const thStyle = {
+  border: '1px solid #334155',
+  padding: '12px',
+  background: '#1e293b',
+  color: 'white',
+};
+
+const tdStyle = {
+  border: '1px solid #334155',
+  padding: '10px',
 };
 
 export default App;
