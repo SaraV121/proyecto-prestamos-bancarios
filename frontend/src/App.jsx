@@ -39,6 +39,12 @@ function App() {
 console.log("menuOpen OK");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  const contentStyle = {
+    flex: 1,
+    padding: '20px',
+    marginLeft: menuOpen ? '0px' : '0px',
+  };
+
 
   const prestamosAprobados = loans.filter(
   loan => loan.estado === 'Aprobado'
