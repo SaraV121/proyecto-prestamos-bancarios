@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: prestamos_backend
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      DB_HOST: ep-aged-fire-apmmplfh-pooler.c-7.us-east-1.aws.neon.tech
+      DB_PORT: 5432
+      DB_USERNAME: neondb_owner
+      DB_PASSWORD: npg_1ejGt6RSAYiE
+      DB_DATABASE: neondb
+
+      JWT_SECRET: mi_clave_secreta
+      RECAPTCHA_SECRET: 6LfRwRUtAAAAAJw61FcKYqVSPvaatcLU0AbQE68D
+
+    restart: always
