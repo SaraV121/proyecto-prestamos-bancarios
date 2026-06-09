@@ -844,8 +844,7 @@ doc.text(
 
       {/* MENU */}
 
-      <div style={{ ...sidebarStyle,
-    display: menuOpen ? 'flex' : 'none',  className="sidebar"}}>
+      <div style={sidebarStyle} className="sidebar">
 
         <h2 style={{ textAlign: 'center' }}>
           MENÚ
