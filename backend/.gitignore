@@ -4,8 +4,7 @@
 /build
 .env
 
-# Logs
-logs
+# Archivos de log
 *.log
 npm-debug.log*
 pnpm-debug.log*
