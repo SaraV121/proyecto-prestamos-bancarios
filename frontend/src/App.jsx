@@ -821,6 +821,23 @@ doc.text(
   return (
 
     <div style={mainContainer}>
+       {/* BOTÓN MENU */}
+    <button
+      onClick={() => setMenuOpen(!menuOpen)}
+      style={{
+        position: 'fixed',
+        top: '15px',
+        left: '15px',
+        background: '#2563eb',
+        color: 'white',
+        border: 'none',
+        padding: '10px 15px',
+        borderRadius: '10px',
+        zIndex: 999,
+      }}
+    >
+      ☰
+    </button>
 
       {/* MENU */}
 
