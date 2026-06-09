@@ -9,6 +9,10 @@ import { LoansModule } from './loans/loans.module';
 import { AppService, RecaptchaService } from './app.service';
 import { LogsModule } from './logs/logs.module';
 
+console.log('DB_HOST=', process.env.DB_HOST);
+console.log('DB_PORT=', process.env.DB_PORT);
+console.log('DB_DATABASE=', process.env.DB_DATABASE);
+
 @Module({
   imports: [
     ConfigModule.forRoot({
