@@ -86,3 +86,19 @@ button:hover {
 .logout-btn:hover {
   background: #b91c1c;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 1.8rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+button {
+  font-size: 0.95rem;
+}

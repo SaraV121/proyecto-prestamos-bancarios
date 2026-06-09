@@ -35,6 +35,16 @@ function App() {
   const [captchaToken, setCaptchaToken] = useState('');
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 768);
+  };
+
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
 
 
   const prestamosAprobados = loans.filter(
@@ -821,23 +831,26 @@ doc.text(
   return (
 
     <div style={mainContainer}>
+
        {/* BOTÓN MENU */}
-    <button
-      onClick={() => setMenuOpen(!menuOpen)}
-      style={{
-        position: 'fixed',
-        top: '15px',
-        left: '15px',
-        background: '#2563eb',
-        color: 'white',
-        border: 'none',
-        padding: '10px 15px',
-        borderRadius: '10px',
-        zIndex: 999,
-      }}
-    >
-      ☰
-    </button>
+    {isMobile && (
+  <button
+    onClick={() => setMenuOpen(!menuOpen)}
+    style={{
+      position: 'fixed',
+      top: '15px',
+      left: '15px',
+      background: '#2563eb',
+      color: 'white',
+      border: 'none',
+      padding: '10px 15px',
+      borderRadius: '10px',
+      zIndex: 999,
+    }}
+  >
+    ☰
+  </button>
+)}
 
       {/* MENU */}
 
@@ -1423,19 +1436,22 @@ const mainContainer = {
 };
 
 const sidebarStyle = {
-  width: window.innerWidth < 768
-    ? '100%'
-    : '250px',
+  width: isMobile ? '100%' : '250px',
   background: '#1e293b',
   padding: '20px',
-  display: 'flex',
+  display: menuOpen ? 'flex' : 'none',
   flexDirection: 'column',
   gap: '15px',
+  position: isMobile ? 'fixed' : 'relative',
+  height: isMobile ? '100vh' : 'auto',
+  zIndex: 1000,
 };
 
 const contentStyle = {
   flex: 1,
-  padding: '40px',
+  padding: isMobile ? '15px' : '40px',
+  marginLeft: isMobile ? '0' : menuOpen ? '250px' : '0',
+  transition: '0.3s',
 };
 
 const menuButton = {
