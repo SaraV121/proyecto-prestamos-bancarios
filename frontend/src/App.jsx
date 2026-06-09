@@ -825,7 +825,6 @@ doc.text(
     <div style={mainContainer}>
 
             {/* BOTÓN MENU */}
-            onClick={() => setMenuOpen(!menuOpen)}
     <button
       onClick={() => setMenuOpen(!menuOpen)}
       style={{

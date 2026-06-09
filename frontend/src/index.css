@@ -123,11 +123,6 @@ button {
   }
 }
 
-.login-card{
-    width:400px;
-    padding:40px;
-}
-
 @media (max-width:768px){
     .login-card{
         width:90%;
