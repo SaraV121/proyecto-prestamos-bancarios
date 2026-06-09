@@ -825,6 +825,7 @@ doc.text(
     <div style={mainContainer}>
 
             {/* BOTÓN MENU */}
+            onClick={() => setMenuOpen(!menuOpen)}
     <button
       onClick={() => setMenuOpen(!menuOpen)}
       style={{
@@ -844,7 +845,10 @@ doc.text(
 
       {/* MENU */}
 
-      <div style={sidebarStyle} className="sidebar">
+      <div
+  style={sidebarStyle}
+  className={`sidebar ${menuOpen ? 'open' : ''}`}
+>
 
         <h2 style={{ textAlign: 'center' }}>
           MENÚ
@@ -1426,9 +1430,7 @@ const mainContainer = {
 };
 
 const sidebarStyle = {
-  width: window.innerWidth < 768
-    ? '100%'
-    : '250px',
+  width: '250px',
   background: '#1e293b',
   padding: '20px',
   display: 'flex',

@@ -104,16 +104,21 @@ button {
 }
 
 .sidebar {
-  width: 250px;
-  background: #1e293b;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  transition: transform 0.3s ease;
 }
 
+/* MOBILE */
 @media (max-width: 768px) {
   .sidebar {
-    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 1000;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
   }
 }
