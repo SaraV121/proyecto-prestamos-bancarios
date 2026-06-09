@@ -1418,6 +1418,7 @@ const loginCard = {
   padding: '40px',
   borderRadius: '20px',
   width: '400px',
+  maxWidth: '90%',
   color: 'white',
   textAlign: 'center',
 };
