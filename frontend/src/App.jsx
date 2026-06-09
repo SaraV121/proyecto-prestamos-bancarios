@@ -36,6 +36,7 @@ function App() {
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
   const [menuOpen, setMenuOpen] = useState(true);
+console.log("menuOpen OK");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
 
