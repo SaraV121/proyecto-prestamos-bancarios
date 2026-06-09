@@ -878,41 +878,25 @@ doc.text(
           onClick={async () => {
 
   try {
+  await axios.post(
+    'https://proyecto-prestamos-bancarios.onrender.com/logs',
+    {
+      usuario: localStorage.getItem('usuario'),
+      ip: '::1',
+      navegador: navigator.userAgent,
+      evento: 'Salida',
+      fechaHora: new Date(),
+    }
+  );
 
-     console.log('Registrando salida...');
+  console.log('Salida registrada');
+} catch (error) {
+  console.error(error);
+}
 
-    await axios.post(
-      'http://localhost:3000/logs',
-      {
-        usuario:
-          localStorage.getItem('usuario'),
-
-        ip: '::1',
-
-        navegador:
-          navigator.userAgent,
-
-        evento: 'Salida',
-
-        fechaHora:
-          new Date(),
-      }
-    );
-
-     console.log('Salida registrada');
-
-  } catch (error) {
-
-    console.error(
-      'Error al guardar log',
-      error
-    );
-
-  }
-
-  localStorage.removeItem('token');
-  localStorage.removeItem('rol');
-  localStorage.removeItem('usuario');
+localStorage.removeItem('token');
+localStorage.removeItem('rol');
+localStorage.removeItem('usuario');
 
   setCorreo('');
   setLoginPassword('');
