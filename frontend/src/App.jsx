@@ -35,9 +35,6 @@ function App() {
   const [captchaToken, setCaptchaToken] = useState('');
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const isMobile = window.innerWidth <= 768;
-  
 
 
   const prestamosAprobados = loans.filter(
@@ -57,7 +54,7 @@ const prestamosRechazados = loans.filter(
   monto: '',
   plazo: '',
   estado: 'Pendiente',});
-  
+
 
   const [form, setForm] = useState({
     nombre: '',
@@ -267,7 +264,7 @@ const createLoan = async (e) => {
   // =========================
 
   const register = async () => {
-    
+
     if (
     !nombreUsuario ||
     !correoRegistro ||
@@ -276,10 +273,10 @@ const createLoan = async (e) => {
     alert('Todos los campos son obligatorios');
     return;
   }
-  
+
   const emailRegex =
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+
     if (!emailRegex.test(correoRegistro)) {
       alert('Correo electrónico inválido');
       return;
@@ -288,9 +285,9 @@ const createLoan = async (e) => {
       alert('La contraseña es muy débil');
       return;
     }
-    
+
     try {
-      
+
       await axios.post(
         'https://proyecto-prestamos-bancarios.onrender.com/users',
         {
@@ -314,7 +311,7 @@ const createLoan = async (e) => {
 
   const token = localStorage.getItem('token');
   const rolGuardado = localStorage.getItem('rol');
-  
+
 
   if (token) {
     setIsLogged(true);
@@ -365,10 +362,10 @@ const createLoan = async (e) => {
   // =========================
   const handleCaptcha = (token) => {
     setCaptchaToken(token);
-  
+
   };
 
-  
+
 
 
   // =========================
@@ -585,7 +582,7 @@ const createLoan = async (e) => {
     align: 'center',
   });
 
-  
+
   doc.setTextColor(0, 0, 0);
 
   doc.setFontSize(11);
@@ -646,7 +643,7 @@ const createLoan = async (e) => {
   });
   doc.setFontSize(10);
 
-  
+
 
 doc.text(
   'Generado automaticamente por el Sistema de Prestamos Bancarios',
@@ -656,7 +653,7 @@ doc.text(
 );
 
   doc.save('reporte_clientes.pdf');
-  
+
 };
 
   // =========================
@@ -823,38 +820,11 @@ doc.text(
 
   return (
 
-    <div style={mainContainer}>
+    <div style={{...mainContainer, flexDirection: window.innerWidth < 768 ? 'column' : 'row'}}>
 
-            {/* BOTÓN MENU */}
-    {window.innerWidth <= 768 && (
-  <button
-    onClick={() => setMenuOpen(!menuOpen)}
-    style={{
-      position: 'fixed',
-      top: '15px',
-      left: '15px',
-      zIndex: 999,
-      background: '#2563eb',
-      color: 'white',
-      border: 'none',
-      padding: '10px 15px',
-      borderRadius: '10px',
-    }}
-  >
-    ☰
-  </button>
-)}
       {/* MENU */}
 
-      <div
-  style={{
-    ...sidebarStyle,
-    width:
-      window.innerWidth <= 768
-        ? (menuOpen ? '250px' : '0')
-        : '250px',
-  }}
->
+      <div style={sidebarStyle}>
 
         <h2 style={{ textAlign: 'center' }}>
           MENÚ
@@ -903,7 +873,7 @@ doc.text(
         </button>
 
         <button
-        
+
           style={logoutStyle}
           onClick={async () => {
 
@@ -952,14 +922,7 @@ localStorage.removeItem('usuario');
 
       <div style={contentStyle}>
 
-        <h1
-  style={{
-    fontSize:
-      window.innerWidth <= 768
-        ? '28px'
-        : '48px'
-  }}
->
+        <h1>
           Sistema de Préstamos Bancarios
         </h1>
 
@@ -1266,10 +1229,9 @@ localStorage.removeItem('usuario');
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns:
-  window.innerWidth <= 768
-    ? '1fr'
-    : 'repeat(4, 1fr)',
+        gridTemplateColumns: window.innerWidth < 768
+  ? 'repeat(2, 1fr)'
+  : 'repeat(4, 1fr)',
         gap: '15px',
         marginBottom: '30px',
       }}
@@ -1325,14 +1287,14 @@ localStorage.removeItem('usuario');
           <div style={cardStyle}>
             <h2>Registros de Acceso</h2>
 
-          <div style={{ overflowX: 'auto' }}>
+           <div style={{ overflowX: 'auto', width: '100%' }}>
   <table
     style={{
-      minWidth: '700px',
+      width: '100%',
       borderCollapse: 'collapse',
     }}
   >
-      
+
 
       <thead>
 
@@ -1403,8 +1365,8 @@ localStorage.removeItem('usuario');
 
       </tbody>
 
-    </table>
-    </div>
+        </table>
+        </div>
           </div>
         )}
 
@@ -1434,7 +1396,6 @@ const loginCard = {
   padding: '40px',
   borderRadius: '20px',
   width: '400px',
-  maxWidth: '90%',
   color: 'white',
   textAlign: 'center',
 };
@@ -1453,10 +1414,21 @@ const sidebarStyle = {
   display: 'flex',
   flexDirection: 'column',
   gap: '15px',
+  minHeight: '100vh',
+};
+
+const sidebarMobile = {
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
 };
 
 const contentStyle = {
   flex: 1,
+  padding: '20px',
+  maxWidth: '100%',
   overflowX: 'hidden',
 };
 
