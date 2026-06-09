@@ -826,23 +826,24 @@ doc.text(
     <div style={mainContainer}>
 
             {/* BOTÓN MENU */}
-    <button
-      onClick={() => setMenuOpen(!menuOpen)}
-      style={{
-        position: 'fixed',
-        top: '15px',
-        left: '15px',
-        background: '#2563eb',
-        color: 'white',
-        border: 'none',
-        padding: '10px 15px',
-        borderRadius: '10px',
-        zIndex: 999,
-      }}
-    >
-      ☰
-    </button>
-
+    {window.innerWidth <= 768 && (
+  <button
+    onClick={() => setMenuOpen(!menuOpen)}
+    style={{
+      position: 'fixed',
+      top: '15px',
+      left: '15px',
+      zIndex: 999,
+      background: '#2563eb',
+      color: 'white',
+      border: 'none',
+      padding: '10px 15px',
+      borderRadius: '10px',
+    }}
+  >
+    ☰
+  </button>
+)}
       {/* MENU */}
 
       <div
@@ -951,7 +952,14 @@ localStorage.removeItem('usuario');
 
       <div style={contentStyle}>
 
-        <h1>
+        <h1
+  style={{
+    fontSize:
+      window.innerWidth <= 768
+        ? '28px'
+        : '48px'
+  }}
+>
           Sistema de Préstamos Bancarios
         </h1>
 
