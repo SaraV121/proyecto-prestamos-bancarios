@@ -821,7 +821,24 @@ doc.text(
 
   return (
 
-    <div style={{...mainContainer,  flexDirection: 'row',}}>
+    <div style={mainContainer}>
+      {/* BOTÓN MENU */}
+    <button
+      onClick={() => setMenuOpen(!menuOpen)}
+      style={{
+        position: 'fixed',
+        top: '15px',
+        left: '15px',
+        background: '#2563eb',
+        color: 'white',
+        border: 'none',
+        padding: '10px 15px',
+        borderRadius: '10px',
+        zIndex: 999,
+      }}
+    >
+      ☰
+    </button>
 
       {/* MENU */}
 
@@ -920,25 +937,7 @@ localStorage.removeItem('usuario');
         </button>
 
       </div>
-    
     )}
-    <button
-  onClick={() => setMenuOpen(!menuOpen)}
-  style={{
-    position: 'fixed',
-    top: '15px',
-    left: '15px',
-    zIndex: 999,
-    background: '#2563eb',
-    color: 'white',
-    border: 'none',
-    padding: '10px 15px',
-    borderRadius: '10px',
-    cursor: 'pointer',
-  }}
->
-  ☰
-</button>
 
       {/* CONTENIDO */}
 
