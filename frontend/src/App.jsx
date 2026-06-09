@@ -687,7 +687,8 @@ doc.text(
 
         <div style={loginCard}>
 
-          <h1>Sistema Bancario TAW 23</h1>
+          <h1>Sistema Bancario
+          </h1>
 
           <hr />
 
@@ -1381,58 +1382,42 @@ localStorage.removeItem('usuario');
 // =========================
 // STYLES
 // =========================
-
 const loginContainer = {
   background: '#0f172a',
   minHeight: '100vh',
   display: 'flex',
-  flexWrap: 'wrap',
   justifyContent: 'center',
   alignItems: 'center',
 };
 
 const loginCard = {
   background: '#1e293b',
-  padding: '25px',
+  padding: '40px',
   borderRadius: '20px',
-  width: '360px',
+  width: '400px',
   color: 'white',
   textAlign: 'center',
 };
 
 const mainContainer = {
   display: 'flex',
-  justifyContent: 'center',
   minHeight: '100vh',
   background: '#0f172a',
   color: 'white',
-  padding: '20px',
 };
 
 const sidebarStyle = {
-  width: '240px',
-  maxWidth: '240px',
+  width: '250px',
   background: '#1e293b',
-  padding: '15px',
+  padding: '20px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '12px',
-  minHeight: '100vh',
-};
-
-const sidebarMobile = {
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  justifyContent: 'center',
+  gap: '15px',
 };
 
 const contentStyle = {
   flex: 1,
-  padding: '20px',
-  maxWidth: '1100px',
-  width: '100%',
+  padding: '40px',
 };
 
 const menuButton = {
@@ -1446,9 +1431,9 @@ const menuButton = {
 
 const cardStyle = {
   background: '#1e293b',
-  padding: '18px',
+  padding: '25px',
   borderRadius: '15px',
-  marginBottom: '20px',
+  marginBottom: '25px',
 };
 
 const clientCard = {
@@ -1460,19 +1445,20 @@ const clientCard = {
 
 const inputStyle = {
   width: '100%',
-  padding: '10px',
-  marginBottom: '12px',
-  borderRadius: '8px',
+  padding: '12px',
+  marginBottom: '15px',
+  borderRadius: '10px',
   border: 'none',
+  boxSizing: 'border-box',
 };
 
 const buttonStyle = {
   width: '100%',
-  padding: '10px',
+  padding: '12px',
   background: '#2563eb',
   color: 'white',
   border: 'none',
-  borderRadius: '8px',
+  borderRadius: '10px',
   cursor: 'pointer',
 };
 
