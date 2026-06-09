@@ -36,6 +36,7 @@ function App() {
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
   const [menuOpen, setMenuOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
 
   const prestamosAprobados = loans.filter(
@@ -356,6 +357,15 @@ const createLoan = async (e) => {
     });
 
   };
+
+  useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 768);
+  };
+
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
 
 
   // =========================
@@ -823,23 +833,22 @@ doc.text(
 
     <div style={mainContainer}>
       {/* BOTÓN MENU */}
-    <button
-      onClick={() => setMenuOpen(!menuOpen)}
-      style={{
-        position: 'fixed',
-        top: '15px',
-        left: '15px',
-        background: '#2563eb',
-        color: 'white',
-        border: 'none',
-        padding: '10px 15px',
-        borderRadius: '10px',
-        zIndex: 999,
-      }}
-    >
-      ☰
-    </button>
-
+  <button
+  onClick={() => setMenuOpen(!menuOpen)}
+  style={{
+    position: 'fixed',
+    top: 15,
+    left: 15,
+    zIndex: 9999,
+    background: '#2563eb',
+    border: 'none',
+    padding: '10px 12px',
+    borderRadius: '10px',
+    color: 'white'
+  }}
+>
+  ☰
+</button>
       {/* MENU */}
 
       {menuOpen && (
@@ -1250,7 +1259,7 @@ localStorage.removeItem('usuario');
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: window.innerWidth < 768
+        gridTemplateColumns: isMobile
   ? 'repeat(2, 1fr)'
   : 'repeat(4, 1fr)',
         gap: '15px',
@@ -1429,14 +1438,11 @@ const mainContainer = {
 };
 
 const sidebarStyle = {
-  width: '260px',
+  width: menuOpen ? '260px' : '0px',
+  overflow: 'hidden',
+  transition: '0.3s ease',
   background: 'linear-gradient(180deg, #111827, #1e293b)',
-  padding: '20px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  minHeight: '100vh',
-  boxShadow: '2px 0 10px rgba(0,0,0,0.4)',
+  padding: menuOpen ? '20px' : '0px',
 };
 
 const sidebarMobile = {
