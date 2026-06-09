@@ -820,7 +820,7 @@ doc.text(
 
   return (
 
-    <div style={{...mainContainer, flexDirection: window.innerWidth < 768 ? 'column' : 'row'}}>
+    <div style={mainContainer}>
 
       {/* MENU */}
 
@@ -1393,27 +1393,30 @@ const loginContainer = {
 
 const loginCard = {
   background: '#1e293b',
-  padding: '40px',
+  padding: '25px',
   borderRadius: '20px',
-  width: '400px',
+  width: '360px',
   color: 'white',
   textAlign: 'center',
 };
 
 const mainContainer = {
   display: 'flex',
+  justifyContent: 'center',
   minHeight: '100vh',
   background: '#0f172a',
   color: 'white',
+  padding: '20px',
 };
 
 const sidebarStyle = {
-  width: '250px',
+  width: '240px',
+  maxWidth: '240px',
   background: '#1e293b',
-  padding: '20px',
+  padding: '15px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '15px',
+  gap: '12px',
   minHeight: '100vh',
 };
 
@@ -1428,8 +1431,8 @@ const sidebarMobile = {
 const contentStyle = {
   flex: 1,
   padding: '20px',
-  maxWidth: '100%',
-  overflowX: 'hidden',
+  maxWidth: '1100px',
+  width: '100%',
 };
 
 const menuButton = {
@@ -1443,9 +1446,9 @@ const menuButton = {
 
 const cardStyle = {
   background: '#1e293b',
-  padding: '25px',
+  padding: '18px',
   borderRadius: '15px',
-  marginBottom: '25px',
+  marginBottom: '20px',
 };
 
 const clientCard = {
@@ -1457,20 +1460,19 @@ const clientCard = {
 
 const inputStyle = {
   width: '100%',
-  padding: '12px',
-  marginBottom: '15px',
-  borderRadius: '10px',
+  padding: '10px',
+  marginBottom: '12px',
+  borderRadius: '8px',
   border: 'none',
-  boxSizing: 'border-box',
 };
 
 const buttonStyle = {
   width: '100%',
-  padding: '12px',
+  padding: '10px',
   background: '#2563eb',
   color: 'white',
   border: 'none',
-  borderRadius: '10px',
+  borderRadius: '8px',
   cursor: 'pointer',
 };
 
