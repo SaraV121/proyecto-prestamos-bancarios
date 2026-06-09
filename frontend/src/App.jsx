@@ -35,7 +35,6 @@ function App() {
   const [captchaToken, setCaptchaToken] = useState('');
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
-  const [menuOpen, setMenuOpen] = useState(true);
 
 
   const prestamosAprobados = loans.filter(
