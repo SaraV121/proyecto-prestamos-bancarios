@@ -36,6 +36,7 @@ function App() {
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const isMobile = window.innerWidth <= 768;
   
 
 
@@ -1253,7 +1254,9 @@ localStorage.removeItem('usuario');
       style={{
         display: 'grid',
         gridTemplateColumns:
-          'repeat(4, 1fr)',
+  window.innerWidth <= 768
+    ? '1fr'
+    : 'repeat(4, 1fr)',
         gap: '15px',
         marginBottom: '30px',
       }}
@@ -1308,12 +1311,19 @@ localStorage.removeItem('usuario');
         {section === 'logs' && (
           <div style={cardStyle}>
             <h2>Registros de Acceso</h2>
+
+          <div
+  style={{
+    overflowX: 'auto',
+    width: '100%',
+  }}
+>
             
             <table
       style={{
         width: '100%',
         borderCollapse: 'collapse',
-        overflowX: 'auto',
+        minWidth: '700px',
       }}
     >
       
@@ -1388,6 +1398,7 @@ localStorage.removeItem('usuario');
       </tbody>
 
     </table>
+    </div>
           </div>
         )}
 
@@ -1430,17 +1441,23 @@ const mainContainer = {
 };
 
 const sidebarStyle = {
-  width: '250px',
+  width: window.innerWidth <= 768
+    ? (menuOpen ? '250px' : '0px')
+    : '250px',
+
+  overflow: 'hidden',
+  transition: '0.3s',
   background: '#1e293b',
-  padding: '20px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '15px',
+  padding:
+    window.innerWidth <= 768
+      ? (menuOpen ? '20px' : '0px')
+      : '20px',
 };
 
 const contentStyle = {
   flex: 1,
-  padding: '40px',
+  padding: window.innerWidth <= 768 ? '15px' : '40px',
+  overflowX: 'hidden',
 };
 
 const menuButton = {
