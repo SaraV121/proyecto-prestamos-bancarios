@@ -35,6 +35,7 @@ function App() {
   const [captchaToken, setCaptchaToken] = useState('');
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
+  const [menuOpen, setMenuOpen] = useState(false);
   
 
 
@@ -843,7 +844,8 @@ doc.text(
 
       {/* MENU */}
 
-      <div style={sidebarStyle}>
+      <div style={{ ...sidebarStyle,
+    display: menuOpen ? 'flex' : 'none',  className="sidebar"}}>
 
         <h2 style={{ textAlign: 'center' }}>
           MENÚ
