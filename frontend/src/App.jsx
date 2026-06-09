@@ -846,8 +846,13 @@ doc.text(
       {/* MENU */}
 
       <div
-  style={sidebarStyle}
-  className={`sidebar ${menuOpen ? 'open' : ''}`}
+  style={{
+    ...sidebarStyle,
+    width:
+      window.innerWidth <= 768
+        ? (menuOpen ? '250px' : '0')
+        : '250px',
+  }}
 >
 
         <h2 style={{ textAlign: 'center' }}>
@@ -1312,20 +1317,13 @@ localStorage.removeItem('usuario');
           <div style={cardStyle}>
             <h2>Registros de Acceso</h2>
 
-          <div
-  style={{
-    overflowX: 'auto',
-    width: '100%',
-  }}
->
-            
-            <table
-      style={{
-        width: '100%',
-        borderCollapse: 'collapse',
-        minWidth: '700px',
-      }}
-    >
+          <div style={{ overflowX: 'auto' }}>
+  <table
+    style={{
+      minWidth: '700px',
+      borderCollapse: 'collapse',
+    }}
+  >
       
 
       <thead>
@@ -1441,22 +1439,16 @@ const mainContainer = {
 };
 
 const sidebarStyle = {
-  width: window.innerWidth <= 768
-    ? (menuOpen ? '250px' : '0px')
-    : '250px',
-
-  overflow: 'hidden',
-  transition: '0.3s',
+  width: '250px',
   background: '#1e293b',
-  padding:
-    window.innerWidth <= 768
-      ? (menuOpen ? '20px' : '0px')
-      : '20px',
+  padding: '20px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '15px',
 };
 
 const contentStyle = {
   flex: 1,
-  padding: window.innerWidth <= 768 ? '15px' : '40px',
   overflowX: 'hidden',
 };
 
