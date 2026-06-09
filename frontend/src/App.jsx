@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReCAPTCHA from 'react-google-recaptcha';
 import jsPDF from 'jspdf';
@@ -687,7 +686,7 @@ doc.text(
 
         <div style={loginCard}>
 
-          <h1>Sistema Bancario TEST 123</h1>
+          <h1>Sistema Bancario</h1>
 
           <hr />
 
@@ -821,23 +820,6 @@ doc.text(
   return (
 
     <div style={mainContainer}>
-       {/* BOTÓN MENU */}
-    <button
-      onClick={() => setMenuOpen(!menuOpen)}
-      style={{
-        position: 'fixed',
-        top: '15px',
-        left: '15px',
-        background: '#2563eb',
-        color: 'white',
-        border: 'none',
-        padding: '10px 15px',
-        borderRadius: '10px',
-        zIndex: 999,
-      }}
-    >
-      ☰
-    </button>
 
       {/* MENU */}
 
@@ -1246,9 +1228,8 @@ localStorage.removeItem('usuario');
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: window.innerWidth < 768
-  ? 'repeat(2, 1fr)'
-  : 'repeat(4, 1fr)',
+        gridTemplateColumns:
+          'repeat(4, 1fr)',
         gap: '15px',
         marginBottom: '30px',
       }}
@@ -1304,13 +1285,13 @@ localStorage.removeItem('usuario');
           <div style={cardStyle}>
             <h2>Registros de Acceso</h2>
             
-           <div style={{ overflowX: 'auto', width: '100%' }}>
-  <table
-    style={{
-      width: '100%',
-      borderCollapse: 'collapse',
-    }}
-  >
+            <table
+      style={{
+        width: '100%',
+        borderCollapse: 'collapse',
+        overflowX: 'auto',
+      }}
+    >
       
 
       <thead>
@@ -1382,8 +1363,7 @@ localStorage.removeItem('usuario');
 
       </tbody>
 
-        </table>
-        </div>
+    </table>
           </div>
         )}
 
@@ -1420,51 +1400,39 @@ const loginCard = {
 const mainContainer = {
   display: 'flex',
   minHeight: '100vh',
-  background: '#0b1220',
+  background: '#0f172a',
   color: 'white',
 };
 
 const sidebarStyle = {
-  width: '260px',
-  background: 'linear-gradient(180deg, #111827, #1e293b)',
+  width: window.innerWidth < 768
+    ? '100%'
+    : '250px',
+  background: '#1e293b',
   padding: '20px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '12px',
-  minHeight: '100vh',
-  boxShadow: '2px 0 10px rgba(0,0,0,0.4)',
-};
-
-const sidebarMobile = {
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  justifyContent: 'center',
+  gap: '15px',
 };
 
 const contentStyle = {
   flex: 1,
-  padding: '20px',
-  marginLeft: menuOpen ? '0' : '0',
+  padding: '40px',
 };
 
 const menuButton = {
   padding: '12px',
-  background: '#1f2937',
+  background: '#334155',
   color: 'white',
-  border: '1px solid #334155',
+  border: 'none',
   borderRadius: '10px',
   cursor: 'pointer',
-  textAlign: 'left',
 };
 
 const cardStyle = {
-  background: 'rgba(30, 41, 59, 0.8)',
+  background: '#1e293b',
   padding: '25px',
-  borderRadius: '18px',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid #334155',
+  borderRadius: '15px',
   marginBottom: '25px',
 };
 
