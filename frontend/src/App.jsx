@@ -820,7 +820,7 @@ doc.text(
 
   return (
 
-    <div style={mainContainer}>
+    <div style={{...mainContainer, flexDirection: window.innerWidth < 768 ? 'column' : 'row'}}>
 
       {/* MENU */}
 
@@ -1229,8 +1229,9 @@ localStorage.removeItem('usuario');
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns:
-          'repeat(4, 1fr)',
+        gridTemplateColumns: window.innerWidth < 768
+  ? 'repeat(2, 1fr)'
+  : 'repeat(4, 1fr)',
         gap: '15px',
         marginBottom: '30px',
       }}
@@ -1286,13 +1287,13 @@ localStorage.removeItem('usuario');
           <div style={cardStyle}>
             <h2>Registros de Acceso</h2>
             
-            <table
-      style={{
-        width: '100%',
-        borderCollapse: 'collapse',
-        overflowX: 'auto',
-      }}
-    >
+           <div style={{ overflowX: 'auto', width: '100%' }}>
+  <table
+    style={{
+      width: '100%',
+      borderCollapse: 'collapse',
+    }}
+  >
       
 
       <thead>
@@ -1364,7 +1365,8 @@ localStorage.removeItem('usuario');
 
       </tbody>
 
-    </table>
+        </table>
+        </div>
           </div>
         )}
 
@@ -1406,19 +1408,28 @@ const mainContainer = {
 };
 
 const sidebarStyle = {
-  width: window.innerWidth < 768
-    ? '100%'
-    : '250px',
+  width: '250px',
   background: '#1e293b',
   padding: '20px',
   display: 'flex',
   flexDirection: 'column',
   gap: '15px',
+  minHeight: '100vh',
+};
+
+const sidebarMobile = {
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
 };
 
 const contentStyle = {
   flex: 1,
-  padding: '40px',
+  padding: '20px',
+  maxWidth: '100%',
+  overflowX: 'hidden',
 };
 
 const menuButton = {
