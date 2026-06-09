@@ -159,7 +159,7 @@ const loansChartData = {
 const getLoans = async () => {
 
   const response = await axios.get(
-    'http://localhost:3000/loans'
+    'https://proyecto-prestamos-bancarios.onrender.com/loans'
   );
 
   setLoans(response.data);
@@ -170,7 +170,7 @@ const createLoan = async (e) => {
   e.preventDefault();
 
   await axios.post(
-    'http://localhost:3000/loans',
+    'https://proyecto-prestamos-bancarios.onrender.com/loans',
     {
       ...loanForm,
       monto: Number(loanForm.monto),
@@ -188,7 +188,7 @@ const createLoan = async (e) => {
   const getLogs = async () => {
 
   const response = await axios.get(
-    'http://localhost:3000/logs'
+    'https://proyecto-prestamos-bancarios.onrender.com/logs'
   );
 
   setLogs(response.data);
@@ -224,7 +224,7 @@ const createLoan = async (e) => {
   try {
 
     const res = await axios.post(
-      'http://localhost:3000/auth/login',
+      'https://proyecto-prestamos-bancarios.onrender.com/auth/login',
       {
         correo,
         password: loginPassword,
@@ -289,7 +289,7 @@ const createLoan = async (e) => {
     try {
       
       await axios.post(
-        'http://localhost:3000/users',
+        'https://proyecto-prestamos-bancarios.onrender.com/users',
         {
           nombre: nombreUsuario,
           correo: correoRegistro,
@@ -326,7 +326,7 @@ const createLoan = async (e) => {
   const getClients = async () => {
 
     const response = await axios.get(
-      'http://localhost:3000/clients'
+      'https://proyecto-prestamos-bancarios.onrender.com/clients'
     );
 
     setClients(response.data);
@@ -405,7 +405,7 @@ const createLoan = async (e) => {
     if (editingId) {
 
       await axios.put(
-        `http://localhost:3000/clients/${editingId}`,
+        `https://proyecto-prestamos-bancarios.onrender.com/clients/${editingId}`,
         {
           ...form,
           ingresos: Number(form.ingresos),
@@ -417,7 +417,7 @@ const createLoan = async (e) => {
     } else {
 
       await axios.post(
-        'http://localhost:3000/clients',
+        'https://proyecto-prestamos-bancarios.onrender.com/clients',
         {
           ...form,
           ingresos: Number(form.ingresos),
@@ -454,7 +454,7 @@ const createLoan = async (e) => {
     try {
 
       await axios.put(
-        `http://localhost:3000/clients/delete/${id}`,
+        `https://proyecto-prestamos-bancarios.onrender.com/clients/delete/${id}`,
         {},
         {
           headers: {
@@ -794,7 +794,7 @@ doc.text(
           >
 
           <ReCAPTCHA
-          sitekey="6Lfqb7YsAAAAADyM1g7gpjMrOW7n6MYLGifXXov6"
+          sitekey="6LfRwRUtAAAAAJw61FcKYqVSPvaatcLU0AbQE68D"
           onChange={handleCaptcha}
           />
           </div>
