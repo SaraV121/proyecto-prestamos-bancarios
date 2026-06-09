@@ -1451,8 +1451,6 @@ const sidebarMobile = {
 const contentStyle = {
   flex: 1,
   padding: '20px',
-  maxWidth: '100%',
-  overflowX: 'hidden',
   marginLeft: menuOpen ? '0' : '0',
 };
 
