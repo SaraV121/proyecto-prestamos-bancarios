@@ -35,6 +35,7 @@ function App() {
   const [captchaToken, setCaptchaToken] = useState('');
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
+  const [menuOpen, setMenuOpen] = useState(true);
 
 
   const prestamosAprobados = loans.filter(
@@ -820,9 +821,11 @@ doc.text(
 
   return (
 
-    <div style={{...mainContainer, flexDirection: window.innerWidth < 768 ? 'column' : 'row'}}>
+    <div style={{...mainContainer,  flexDirection: 'row',}}>
 
       {/* MENU */}
+
+      {menuOpen && (
 
       <div style={sidebarStyle}>
 
@@ -917,6 +920,25 @@ localStorage.removeItem('usuario');
         </button>
 
       </div>
+    
+    )}
+    <button
+  onClick={() => setMenuOpen(!menuOpen)}
+  style={{
+    position: 'fixed',
+    top: '15px',
+    left: '15px',
+    zIndex: 999,
+    background: '#2563eb',
+    color: 'white',
+    border: 'none',
+    padding: '10px 15px',
+    borderRadius: '10px',
+    cursor: 'pointer',
+  }}
+>
+  ☰
+</button>
 
       {/* CONTENIDO */}
 
@@ -1403,18 +1425,19 @@ const loginCard = {
 const mainContainer = {
   display: 'flex',
   minHeight: '100vh',
-  background: '#0f172a',
+  background: '#0b1220',
   color: 'white',
 };
 
 const sidebarStyle = {
-  width: '250px',
-  background: '#1e293b',
+  width: '260px',
+  background: 'linear-gradient(180deg, #111827, #1e293b)',
   padding: '20px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '15px',
+  gap: '12px',
   minHeight: '100vh',
+  boxShadow: '2px 0 10px rgba(0,0,0,0.4)',
 };
 
 const sidebarMobile = {
@@ -1430,21 +1453,25 @@ const contentStyle = {
   padding: '20px',
   maxWidth: '100%',
   overflowX: 'hidden',
+  marginLeft: menuOpen ? '0' : '0',
 };
 
 const menuButton = {
   padding: '12px',
-  background: '#334155',
+  background: '#1f2937',
   color: 'white',
-  border: 'none',
+  border: '1px solid #334155',
   borderRadius: '10px',
   cursor: 'pointer',
+  textAlign: 'left',
 };
 
 const cardStyle = {
-  background: '#1e293b',
+  background: 'rgba(30, 41, 59, 0.8)',
   padding: '25px',
-  borderRadius: '15px',
+  borderRadius: '18px',
+  backdropFilter: 'blur(10px)',
+  border: '1px solid #334155',
   marginBottom: '25px',
 };
 
