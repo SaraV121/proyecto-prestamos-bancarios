@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import Registro from "./Registro";
 
 import { Bar } from 'react-chartjs-2';
 
@@ -36,6 +37,14 @@ function App() {
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
   const [mostrarRegistro, setMostrarRegistro] = useState(false);
+
+  if (mostrarRegistro) {
+  return (
+    <Registro
+      volverLogin={() => setMostrarRegistro(false)}
+    />
+  );
+}
 
 
   const prestamosAprobados = loans.filter(
