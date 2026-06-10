@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { Link } from 'react-router-dom';
 
 import { Bar } from 'react-chartjs-2';
 
@@ -856,6 +857,11 @@ localStorage.removeItem('usuario');
         >
           Cerrar sesión
         </button>
+
+        <p style={{ textAlign: 'center', marginTop: '10px' }}>
+  ¿No tienes una cuenta?{' '}
+  <Link to="/register">Regístrate aquí</Link>
+</p>
 
       </div>
 
