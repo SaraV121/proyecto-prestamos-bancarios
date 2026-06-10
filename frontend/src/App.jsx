@@ -858,14 +858,14 @@ localStorage.removeItem('usuario');
           Cerrar sesión
         </button>
 
-        <p style={{ textAlign: 'center', marginTop: '10px' }}>
-  ¿No tienes una cuenta?{' '}
-  <Link to="/register">Regístrate aquí</Link>
-</p>
-
       </div>
 
-      {/* CONTENIDO */}
+      <p style={{ textAlign: 'center', marginTop: '10px' }}>
+  ¿No tienes una cuenta?{' '}
+  <Link to="/register">Regístrate aquí</Link> </p>
+
+
+      {/* CONTENIDO */} 
 
       <div style={contentStyle}>
 
