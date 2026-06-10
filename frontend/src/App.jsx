@@ -38,14 +38,6 @@ function App() {
   const [logs, setLogs] = useState([]);
   const [mostrarRegistro, setMostrarRegistro] = useState(false);
 
-  if (mostrarRegistro) {
-  return (
-    <Registro
-      volverLogin={() => setMostrarRegistro(false)}
-    />
-  );
-}
-
 
   const prestamosAprobados = loans.filter(
   loan => loan.estado === 'Aprobado'
@@ -689,7 +681,8 @@ doc.text(
   // LOGIN SCREEN
   // =========================
 
-  if (!isLogged) {
+
+  if (!isLogged && mostrarRegistro) {
 
     return (
 
