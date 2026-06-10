@@ -692,66 +692,6 @@ doc.text(
 
           <hr />
 
-          <h2>Registrar Usuario</h2>
-
-          <input
-            type="text"
-            placeholder="Nombre"
-            value={nombreUsuario}
-            onChange={(e) =>
-              setNombreUsuario(e.target.value)
-            }
-            style={inputStyle}
-          />
-
-          <input
-            type="email"
-            placeholder="Correo"
-            value={correoRegistro}
-            onChange={(e) =>
-              setCorreoRegistro(e.target.value)
-            }
-            style={inputStyle}
-          />
-
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Contraseña"
-            value={passwordRegistro}
-            onChange={(e) => {
-              setPasswordRegistro(e.target.value);
-              checkPasswordStrength(e.target.value);
-            }}
-            style={inputStyle}
-          />
-
-          <p>
-            Fortaleza:
-            <strong> {strength}</strong>
-          </p>
-
-          <label>
-            <input
-              type="checkbox"
-              checked={showPassword}
-              onChange={(e) =>
-                setShowPassword(e.target.checked)
-              }
-            />
-            Mostrar contraseña
-          </label>
-
-          <br /><br />
-
-          <button
-            onClick={register}
-            style={buttonStyle}
-          >
-            Registrar Usuario
-          </button>
-
-          <hr />
-
           <h2>Iniciar Sesión</h2>
 
           <input
