@@ -753,6 +753,9 @@ doc.text(
   <Link to="/register">Regístrate aquí</Link> </p>
 
         </div>
+         <p style={{ textAlign: 'center', marginTop: '10px' }}>
+  ¿No tienes una cuenta?{' '}
+  <Link to="/register">Regístrate aquí</Link> </p>
 
       </div>
 
