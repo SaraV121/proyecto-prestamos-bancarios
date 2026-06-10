@@ -768,7 +768,7 @@ doc.text(
   );
 }
 
-  if (!isLogged) {
+  if (!isLogged && mostrarRegistro) {
 
     return (
 

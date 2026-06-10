@@ -10,7 +10,7 @@ function Registro({ volverLogin }) {
   const register = async () => {
     try {
       await axios.post(
-        "https://TU_BACKEND/users",
+        "https://prestamos-backend.onrender.com/users",
         {
           nombre,
           correo,
