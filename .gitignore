@@ -1,0 +1,15 @@
+# dependencias
+node_modules/
+
+# entorno local
+.env
+
+# docker (opcional, pero normalmente NO se sube .env)
+.env.*
+
+# builds
+dist/
+build/
+
+# logs
+*.log
