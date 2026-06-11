@@ -680,7 +680,7 @@ doc.text(
 
           <h1
   style={{
-    fontSize: isMobile ? '32px' : '48px',
+    fontSize: isMobile ? '23px' : '32px',
     wordBreak: 'break-word',
   }}
 >
