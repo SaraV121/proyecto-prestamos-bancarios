@@ -734,7 +734,26 @@ doc.text(
           <ReCAPTCHA
           sitekey="6LfRwRUtAAAAAJw61FcKYqVSPvaatcLU0AbQE68D"
           onChange={handleCaptcha}
-          />
+          /><div
+  style={{
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '15px',
+    marginBottom: '20px',
+  }}
+>
+  <div
+    style={{
+      transform: isMobile ? 'scale(0.85)' : 'scale(1)',
+      transformOrigin: 'center',
+    }}
+  >
+    <ReCAPTCHA
+      sitekey="TU_SITE_KEY"
+      onChange={handleCaptcha}
+    />
+  </div>
+</div>
           </div>
 
           <button
