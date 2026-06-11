@@ -1,15 +1,17 @@
-FROM node:24-alpine
+FROM node:18 as build
 
 WORKDIR /app
 
-COPY package*.json ./
-
+COPY --from=build /app/dist /usr/share/nginx/html
 RUN npm install
 
 COPY . .
-
 RUN npm run build
+
+FROM nginx:alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:dev"]
