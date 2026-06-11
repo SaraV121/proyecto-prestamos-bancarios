@@ -555,7 +555,7 @@ useEffect(() => {
   doc.setFontSize(10);
 
   doc.text(
-  'Generado automaticamente por el Sistema de Prestamos Bancarios',
+  'Generado automaticamente por el Sistema de Prestamos',
   105,
   285,
   { align: 'center' }
@@ -651,7 +651,7 @@ useEffect(() => {
 
 
 doc.text(
-  'Generado automaticamente por el Sistema de Prestamos Bancarios',
+  'Generado automaticamente por el Sistema de Prestamos',
   105,
   285,
   { align: 'center' }
@@ -708,7 +708,7 @@ doc.text(
     wordBreak: 'break-word',
   }}
 >
-  Sistema de Préstamos Bancarios
+  Sistema de Préstamos
 </h1>
 
           <hr />
@@ -972,7 +972,7 @@ doc.text(
             <h2>Panel de Control</h2>
 
             <p>
-              Bienvenido al sistema bancario.
+              Bienvenido al sistema de Préstamos.
             </p>
 
             <p>
