@@ -38,8 +38,6 @@ function App() {
   const [logs, setLogs] = useState([]);
   const [mostrarRegistro, setMostrarRegistro] = useState(false);
   const [nombre, setNombre] = useState("");
-  const [correo, setCorreo] = useState("");
-  const [password, setPassword] = useState("");
 
 
   const prestamosAprobados = loans.filter(
