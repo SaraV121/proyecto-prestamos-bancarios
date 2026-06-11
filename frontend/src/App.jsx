@@ -839,49 +839,41 @@ doc.text(
           Registros
         </button>
 
-        <button
+       <button
+  style={logoutStyle}
+  onClick={async () => {
 
-          style={logoutStyle}
-          onClick={async () => {
+    try {
+      await axios.post(
+        'https://proyecto-prestamos-bancarios.onrender.com/logs',
+        {
+          usuario: localStorage.getItem('usuario'),
+          ip: '::1',
+          navegador: navigator.userAgent,
+          evento: 'Salida',
+          fechaHora: new Date(),
+        }
+      );
 
-  try {
-  await axios.post(
-    'https://proyecto-prestamos-bancarios.onrender.com/logs',
-    {
-      usuario: localStorage.getItem('usuario'),
-      ip: '::1',
-      navegador: navigator.userAgent,
-      evento: 'Salida',
-      fechaHora: new Date(),
+      console.log('Salida registrada');
+    } catch (error) {
+      console.error(error);
     }
-  );
 
-  console.log('Salida registrada');
-} catch (error) {
-  console.error(error);
-}
+    localStorage.removeItem('token');
+    localStorage.removeItem('rol');
+    localStorage.removeItem('usuario');
 
-localStorage.removeItem('token');
-localStorage.removeItem('rol');
-localStorage.removeItem('usuario');
+    setCorreo('');
+    setLoginPassword('');
+    setCaptchaToken('');
 
-  setCorreo('');
-  setLoginPassword('');
-
-  setNombreUsuario('');
-  setCorreoRegistro('');
-  setPasswordRegistro('');
-
-  setStrength('');
-  setCaptchaToken('');
-
-  setIsLogged(false);
-  setRol('');
-
-}}
-        >
-          Cerrar sesión
-        </button>
+    setIsLogged(false);
+    setRol('');
+  }}
+>
+  Cerrar sesión
+</button>
 
       </div>
 
