@@ -35,6 +35,7 @@ function App() {
   const [captchaToken, setCaptchaToken] = useState('');
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
+  const [mostrarRegistro, setMostrarRegistro] = useState(false);
 
 
   const prestamosAprobados = loans.filter(
@@ -74,10 +75,6 @@ const prestamosRechazados = loans.filter(
   // MENU
   const [section, setSection] = useState('dashboard');
 
-  // REGISTER
-  const [nombreUsuario, setNombreUsuario] = useState('');
-  const [correoRegistro, setCorreoRegistro] = useState('');
-  const [passwordRegistro, setPasswordRegistro] = useState('');
 
   // PASSWORD STRENGTH
   const [strength, setStrength] = useState('');
@@ -675,6 +672,16 @@ doc.text(
 
   };
 
+
+
+  if (mostrarRegistro) {
+  return (
+    <Registro
+      volverLogin={() => setMostrarRegistro(false)}
+    />
+  );
+}
+
   // =========================
   // LOGIN SCREEN
   // =========================
@@ -689,59 +696,6 @@ doc.text(
 
           <h1>Sistema Bancario
           </h1>
-
-          <hr />
-
-          <h2>Registrar Usuario</h2>
-
-          <input
-            type="text"
-            placeholder="Nombre"
-            value={nombreUsuario}
-            onChange={(e) =>
-              setNombreUsuario(e.target.value)
-            }
-            style={inputStyle}
-          />
-
-          <input
-            type="email"
-            placeholder="Correo"
-            value={correoRegistro}
-            onChange={(e) =>
-              setCorreoRegistro(e.target.value)
-            }
-            style={inputStyle}
-          />
-
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Contraseña"
-            value={passwordRegistro}
-            onChange={(e) => {
-              setPasswordRegistro(e.target.value);
-              checkPasswordStrength(e.target.value);
-            }}
-            style={inputStyle}
-          />
-
-          <p>
-            Fortaleza:
-            <strong> {strength}</strong>
-          </p>
-
-          <label>
-            <input
-              type="checkbox"
-              checked={showPassword}
-              onChange={(e) =>
-                setShowPassword(e.target.checked)
-              }
-            />
-            Mostrar contraseña
-          </label>
-
-          <br /><br />
 
           <button
             onClick={register}
@@ -806,6 +760,18 @@ doc.text(
           >
             Ingresar
           </button>
+
+          <p
+  style={{
+    textAlign: 'center',
+    marginTop: '15px',
+    color: '#1976d2',
+    cursor: 'pointer'
+  }}
+  onClick={() => setMostrarRegistro(true)}
+>
+  ¿No tienes cuenta? Regístrate aquí
+</p>
 
         </div>
 
