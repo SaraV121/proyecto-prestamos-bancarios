@@ -1424,7 +1424,7 @@ const mainContainer = {
 };
 
 const sidebarStyle = {
-  width: isMobile ? '100%' : '250px',
+  width: '250px',
   background: '#1e293b',
   padding: '20px',
   display: 'flex',
@@ -1434,7 +1434,7 @@ const sidebarStyle = {
 
 const contentStyle = {
   flex: 1,
-  padding: isMobile ? '15px' : '40px',
+  padding: '40px',
   width: '100%',
   overflowX: 'auto',
 };
@@ -1515,7 +1515,7 @@ const statCard = {
 
   background: '#1e293b',
 
-  padding: isMobile ? '10px' : '20px',
+  padding: '20px',
 
   borderRadius: '12px',
 
