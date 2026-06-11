@@ -2,11 +2,12 @@ import { Controller, Get, Post, Body, Delete, Param, Put } from '@nestjs/common'
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 
 
 @Controller('clients')
+@UseGuards(AuthGuard)
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 
@@ -14,6 +15,7 @@ export class ClientsController {
   create(@Body() data: CreateClientDto) {
     return this.clientsService.create(data);
   }
+  
 
   @Get()
   findAll() {
@@ -25,7 +27,7 @@ export class ClientsController {
   return this.clientsService.update(+id, data);}
 
   @UseGuards(
-  JwtAuthGuard,
+  AuthGuard,
   RolesGuard,)
   
   @Put('delete/:id')
