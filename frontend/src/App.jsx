@@ -654,6 +654,8 @@ doc.text(
           <h1>Sistema Bancario
           </h1>
 
+          <hr />
+
           <h2>Iniciar Sesión</h2>
 
           <input
