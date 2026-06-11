@@ -72,6 +72,27 @@ const prestamosRechazados = loans.filter(
   const [loginPassword, setLoginPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
+  const handleLogin = async (e) => {
+  e.preventDefault();
+
+  const data = {
+    username,
+    password
+  };
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const res = await fetch(`${API_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+  console.log(result);
+};
 
   // MENU
   const [section, setSection] = useState('dashboard');
@@ -182,6 +203,9 @@ const createLoan = async (e) => {
 
   getLoans();
 };
+
+
+// 
 
  // =========================
   // Logs de acceso

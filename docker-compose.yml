@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build:
@@ -13,7 +11,7 @@ services:
       DB_DATABASE: ${DB_DATABASE}
       JWT_SECRET: ${JWT_SECRET}
       RECAPTCHA_SECRET: ${RECAPTCHA_SECRET}
-      restart: always
+    restart: always
 
   frontend:
     build:
