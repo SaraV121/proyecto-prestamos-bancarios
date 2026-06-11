@@ -1404,15 +1404,19 @@ const loginContainer = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  padding: '20px',
+  boxSizing: 'border-box',
 };
 
 const loginCard = {
   background: '#1e293b',
   padding: '40px',
   borderRadius: '20px',
-  width: '400px',
+  width: '90%',
+  maxWidth: '400px',
   color: 'white',
   textAlign: 'center',
+  boxSizing: 'border-box',
 };
 
 const mainContainer = {
@@ -1429,7 +1433,7 @@ const sidebarStyle = {
   padding: '20px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '15px',
+  gap: '25px',
 };
 
 const contentStyle = {
@@ -1447,6 +1451,7 @@ const menuButton = {
   border: 'none',
   borderRadius: '10px',
   cursor: 'pointer',
+  marginBottom: '10px',
 };
 
 const cardStyle = {
