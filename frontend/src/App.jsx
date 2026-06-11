@@ -37,7 +37,8 @@ function App() {
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
   const [mostrarRegistro, setMostrarRegistro] = useState(false);
-
+  const isMobile = window.innerWidth <= 768;
+  
 
   const prestamosAprobados = loans.filter(
   loan => loan.estado === 'Aprobado'
@@ -75,6 +76,10 @@ const prestamosRechazados = loans.filter(
 
   // MENU
   const [section, setSection] = useState('dashboard');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+  window.innerWidth <= 768);
+
 
 
   // PASSWORD STRENGTH
@@ -271,6 +276,29 @@ const createLoan = async (e) => {
     setIsLogged(true);
     setRol(rolGuardado);
   }
+}, []);
+
+useEffect(() => {
+
+  const handleResize = () => {
+
+    setIsMobile(
+      window.innerWidth <= 768
+    );
+
+  };
+
+  window.addEventListener(
+    'resize',
+    handleResize
+  );
+
+  return () =>
+    window.removeEventListener(
+      'resize',
+      handleResize
+    );
+
 }, []);
 
   // =========================
@@ -738,10 +766,57 @@ doc.text(
   return (
 
     <div style={mainContainer}>
+    {isMobile && (
+
+  <button
+    onClick={() => setMenuOpen(!menuOpen)}
+    style={{
+      position: 'fixed',
+      top: '15px',
+      left: '15px',
+      zIndex: 1000,
+      background: '#2563eb',
+      color: 'white',
+      border: 'none',
+      borderRadius: '8px',
+      padding: '10px 15px',
+      fontSize: '22px',
+      cursor: 'pointer'
+    }}
+  >
+    ☰
+  </button>
+
+)}
 
       {/* MENU */}
+      
 
-      <div style={sidebarStyle}>
+      <div
+  style={{
+    ...sidebarStyle,
+
+    display:
+      isMobile
+        ? (menuOpen ? 'block' : 'none')
+        : 'block',
+
+    position:
+      isMobile
+        ? 'fixed'
+        : 'relative',
+
+    zIndex: 999,
+
+    height:
+      isMobile
+        ? '100vh'
+        : 'auto',
+
+    left: 0,
+    top: 0
+  }}
+>
 
         <h2 style={{ textAlign: 'center' }}>
           MENÚ
@@ -749,42 +824,45 @@ doc.text(
 
         <button
           style={menuButton}
-          onClick={() => setSection('dashboard')}
+          onClick={() => {setSection('dashboard');  if (isMobile) {setMenuOpen(false);}}}
         >
           Panel
         </button>
 
         <button
           style={menuButton}
-          onClick={() => setSection('clientes')}
+          onClick={() => {setSection('clientes');
+            if (isMobile) {
+              setMenuOpen(false);}
+            }}
         >
           Clientes
         </button>
 
         <button
           style={menuButton}
-          onClick={() => setSection('prestamos')}
+          onClick={() => {setSection('prestamos'); if (isMobile) {setMenuOpen(false);}}}
         >
           Préstamos
         </button>
 
         <button
           style={menuButton}
-          onClick={() => setSection('reportes')}
+          onClick={() => {setSection('reportes'); if (isMobile) {setMenuOpen(false);}}}
         >
           Reportes
         </button>
 
         <button
           style={menuButton}
-          onClick={() => setSection('estadisticas')}
+          onClick={() => {setSection('estadisticas'); if (isMobile) {setMenuOpen(false);}}}
         >
           Estadísticas
         </button>
 
         <button
           style={menuButton}
-          onClick={() => setSection('logs')}
+          onClick={() => {setSection('logs'); if (isMobile) {setMenuOpen(false);}}}
         >
           Registros
         </button>
@@ -1309,6 +1387,7 @@ const loginCard = {
 
 const mainContainer = {
   display: 'flex',
+  flexWrap: 'wrap',
   minHeight: '100vh',
   background: '#0f172a',
   color: 'white',
@@ -1325,7 +1404,9 @@ const sidebarStyle = {
 
 const contentStyle = {
   flex: 1,
-  padding: '40px',
+  padding: window.innerWidth <= 768
+    ? '15px'
+    : '40px',
 };
 
 const menuButton = {
