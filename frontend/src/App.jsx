@@ -731,10 +731,7 @@ doc.text(
             }}
           >
 
-          <ReCAPTCHA
-          sitekey="6LfRwRUtAAAAAJw61FcKYqVSPvaatcLU0AbQE68D"
-          onChange={handleCaptcha}
-          /><div
+          <div
   style={{
     display: 'flex',
     justifyContent: 'center',
@@ -749,7 +746,7 @@ doc.text(
     }}
   >
     <ReCAPTCHA
-      sitekey="TU_SITE_KEY"
+      sitekey="6LfRwRUtAAAAAJw61FcKYqVSPvaatcLU0AbQE68D"
       onChange={handleCaptcha}
     />
   </div>
