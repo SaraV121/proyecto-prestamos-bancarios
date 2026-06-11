@@ -955,7 +955,7 @@ doc.text(
       <div style={contentStyle}>
 
         <h1>
-          Sistema de Préstamos Bancarios
+          Sistema de Préstamos
         </h1>
 
         <p>
