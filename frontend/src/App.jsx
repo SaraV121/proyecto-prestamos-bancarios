@@ -654,15 +654,6 @@ doc.text(
           <h1>Sistema Bancario
           </h1>
 
-          <button
-            onClick={register}
-            style={buttonStyle}
-          >
-            Registrar Usuario
-          </button>
-
-          <hr />
-
           <h2>Iniciar Sesión</h2>
 
           <input
