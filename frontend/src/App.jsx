@@ -678,8 +678,14 @@ doc.text(
 
         <div style={loginCard}>
 
-          <h1>Sistema Bancario
-          </h1>
+          <h1
+  style={{
+    fontSize: isMobile ? '32px' : '48px',
+    wordBreak: 'break-word',
+  }}
+>
+  Sistema de Préstamos Bancarios
+</h1>
 
           <hr />
 
@@ -1213,15 +1219,14 @@ doc.text(
     <h2>Estadísticas</h2>
 
     <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: window.innerWidth < 768
-  ? 'repeat(2, 1fr)'
-  : 'repeat(4, 1fr)',
-        gap: '15px',
-        marginBottom: '30px',
-      }}
-    >
+  style={{
+    display: 'grid',
+    gridTemplateColumns: isMobile
+      ? '1fr'
+      : 'repeat(4, 1fr)',
+    gap: '20px',
+  }}
+>
 
       <div style={statCard}>
         <h3>Clientes</h3>
@@ -1247,15 +1252,26 @@ doc.text(
 
     <h2>Ingresos por Cliente</h2>
 
-    <div
+   <div
   style={{
-    maxWidth: '100%',
+    width: '100%',
     overflowX: 'auto',
   }}
 >
-  <Bar
-    data={chartData}
-  />
+  <div
+    style={{
+      minWidth: isMobile ? '500px' : '100%',
+      height: '300px',
+    }}
+  >
+    <Bar
+      data={chartData}
+      options={{
+        maintainAspectRatio: false,
+        responsive: true,
+      }}
+    />
+  </div>
 </div>
 
     <br />
@@ -1263,7 +1279,20 @@ doc.text(
 
     <h2>Estado de Préstamos</h2>
 
-    <Bar data={loansChartData} />
+    <div
+  style={{
+    width: '100%',
+    height: '300px',
+  }}
+>
+  <Bar
+    data={loansChartData}
+    options={{
+      responsive: true,
+      maintainAspectRatio: false,
+    }}
+  />
+</div>
 
   </div>
 
@@ -1274,14 +1303,15 @@ doc.text(
             <h2>Registros de Acceso</h2>
 
            <div style={{ overflowX: 'auto', width: '100%' }}>
-  <table
-    style={{
-      width: '100%',
-      borderCollapse: 'collapse',
-    }}
-  >
-
-
+ <div
+  style={{
+    overflowX: 'auto',
+    width: '100%',
+  }}
+>
+  <table   style={{
+    minWidth: '700px'
+  }}>
       <thead>
 
         <tr>
@@ -1353,6 +1383,7 @@ doc.text(
 
         </table>
         </div>
+        </div>
           </div>
         )}
 
@@ -1393,7 +1424,7 @@ const mainContainer = {
 };
 
 const sidebarStyle = {
-  width: '250px',
+  width: isMobile ? '100%' : '250px',
   background: '#1e293b',
   padding: '20px',
   display: 'flex',
@@ -1403,12 +1434,13 @@ const sidebarStyle = {
 
 const contentStyle = {
   flex: 1,
-  padding: window.innerWidth <= 768
-    ? '15px'
-    : '40px',
+  padding: isMobile ? '15px' : '40px',
+  width: '100%',
+  overflowX: 'auto',
 };
 
 const menuButton = {
+  width: '100%',
   padding: '12px',
   background: '#334155',
   color: 'white',
@@ -1483,7 +1515,7 @@ const statCard = {
 
   background: '#1e293b',
 
-  padding: '12px',
+  padding: isMobile ? '10px' : '20px',
 
   borderRadius: '12px',
 
@@ -1491,6 +1523,9 @@ const statCard = {
 
   boxShadow:
     '0 0 10px rgba(0,0,0,0.3)',
+
+  width: '100%',
+  boxSizing: 'border-box',
 
 };
 
