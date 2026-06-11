@@ -76,7 +76,8 @@ function Registro({ volverLogin }) {
   };
 
   return (
-    <div style={{ padding: "30px" }}>
+  <div style={loginContainer}>
+    <div style={loginCard}>
 
       <h1>Sistema Bancario</h1>
 
@@ -89,18 +90,16 @@ function Registro({ volverLogin }) {
         placeholder="Nombre"
         value={nombre}
         onChange={(e) => setNombre(e.target.value)}
+        style={inputStyle}
       />
-
-      <br /><br />
 
       <input
         type="email"
         placeholder="Correo"
         value={correo}
         onChange={(e) => setCorreo(e.target.value)}
+        style={inputStyle}
       />
-
-      <br /><br />
 
       <input
         type={showPassword ? "text" : "password"}
@@ -110,6 +109,7 @@ function Registro({ volverLogin }) {
           setPassword(e.target.value);
           checkPasswordStrength(e.target.value);
         }}
+        style={inputStyle}
       />
 
       <p>
@@ -130,18 +130,63 @@ function Registro({ volverLogin }) {
 
       <br /><br />
 
-      <button onClick={register}>
+      <button
+        onClick={register}
+        style={buttonStyle}
+      >
         Registrarse
       </button>
 
-      <br /><br />
-
-      <button onClick={volverLogin}>
-        Volver al Login
-      </button>
+      <p
+        style={{
+          marginTop: "15px",
+          color: "#3b82f6",
+          cursor: "pointer"
+        }}
+        onClick={volverLogin}
+      >
+        ¿Ya tienes cuenta? Inicia sesión
+      </p>
 
     </div>
-  );
+  </div>
+);
 }
+
+const loginContainer = {
+  minHeight: "100vh",
+  backgroundColor: "#06153A",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const loginCard = {
+  backgroundColor: "#1E2A44",
+  padding: "40px",
+  borderRadius: "20px",
+  width: "400px",
+  textAlign: "center",
+  color: "white",
+};
+
+const inputStyle = {
+  width: "90%",
+  padding: "12px",
+  marginTop: "10px",
+  borderRadius: "8px",
+  border: "none",
+};
+
+const buttonStyle = {
+  width: "96%",
+  padding: "12px",
+  backgroundColor: "#2563eb",
+  color: "white",
+  border: "none",
+  borderRadius: "10px",
+  cursor: "pointer",
+  fontWeight: "bold",
+};
 
 export default Registro;
