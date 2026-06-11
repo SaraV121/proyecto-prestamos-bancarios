@@ -37,7 +37,6 @@ function App() {
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
   const [mostrarRegistro, setMostrarRegistro] = useState(false);
-  const isMobile = window.innerWidth <= 768;
   
 
   const prestamosAprobados = loans.filter(
