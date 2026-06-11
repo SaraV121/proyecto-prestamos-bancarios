@@ -12,7 +12,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import Registro from "./Registro";
 
 import { Bar } from 'react-chartjs-2';
 
@@ -36,8 +35,6 @@ function App() {
   const [captchaToken, setCaptchaToken] = useState('');
   const [loans, setLoans] = useState([]);
   const [logs, setLogs] = useState([]);
-  const [mostrarRegistro, setMostrarRegistro] = useState(false);
-  const [nombre, setNombre] = useState("");
 
 
   const prestamosAprobados = loans.filter(
@@ -76,6 +73,11 @@ const prestamosRechazados = loans.filter(
 
   // MENU
   const [section, setSection] = useState('dashboard');
+
+  // REGISTER
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const [correoRegistro, setCorreoRegistro] = useState('');
+  const [passwordRegistro, setPasswordRegistro] = useState('');
 
   // PASSWORD STRENGTH
   const [strength, setStrength] = useState('');
@@ -256,6 +258,50 @@ const createLoan = async (e) => {
 
   }
 };
+
+  // =========================
+  // REGISTER
+  // =========================
+
+  const register = async () => {
+
+    if (
+    !nombreUsuario ||
+    !correoRegistro ||
+    !passwordRegistro
+  ) {
+    alert('Todos los campos son obligatorios');
+    return;
+  }
+
+  const emailRegex =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(correoRegistro)) {
+      alert('Correo electrónico inválido');
+      return;
+    }
+    if (strength === 'Débil') {
+      alert('La contraseña es muy débil');
+      return;
+    }
+
+    try {
+
+      await axios.post(
+        'https://proyecto-prestamos-bancarios.onrender.com/users',
+        {
+          nombre: nombreUsuario,
+          correo: correoRegistro,
+          password: passwordRegistro,
+          rol: 'empleado',
+        }
+      );
+      alert('Usuario registrado');
+    } catch (error) {
+      alert('Error al registrar');
+    }
+  };
 
   // =========================
   // SESSION
@@ -633,7 +679,6 @@ doc.text(
   // LOGIN SCREEN
   // =========================
 
-
   if (!isLogged) {
 
     return (
@@ -644,6 +689,66 @@ doc.text(
 
           <h1>Sistema Bancario
           </h1>
+
+          <hr />
+
+          <h2>Registrar Usuario</h2>
+
+          <input
+            type="text"
+            placeholder="Nombre"
+            value={nombreUsuario}
+            onChange={(e) =>
+              setNombreUsuario(e.target.value)
+            }
+            style={inputStyle}
+          />
+
+          <input
+            type="email"
+            placeholder="Correo"
+            value={correoRegistro}
+            onChange={(e) =>
+              setCorreoRegistro(e.target.value)
+            }
+            style={inputStyle}
+          />
+
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Contraseña"
+            value={passwordRegistro}
+            onChange={(e) => {
+              setPasswordRegistro(e.target.value);
+              checkPasswordStrength(e.target.value);
+            }}
+            style={inputStyle}
+          />
+
+          <p>
+            Fortaleza:
+            <strong> {strength}</strong>
+          </p>
+
+          <label>
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={(e) =>
+                setShowPassword(e.target.checked)
+              }
+            />
+            Mostrar contraseña
+          </label>
+
+          <br /><br />
+
+          <button
+            onClick={register}
+            style={buttonStyle}
+          >
+            Registrar Usuario
+          </button>
 
           <hr />
 
@@ -694,24 +799,13 @@ doc.text(
           onChange={handleCaptcha}
           />
           </div>
-<button
-  onClick={login}
-  style={buttonStyle}
->
-  Ingresar
-</button>
 
-<p
-  style={{
-    textAlign: 'center',
-    marginTop: '15px',
-    color: '#1976d2',
-    cursor: 'pointer'
-  }}
-  onClick={() => setMostrarRegistro(true)}
->
-  ¿No tienes cuenta? Regístrate aquí
-</p>
+          <button
+            onClick={login}
+            style={buttonStyle}
+          >
+            Ingresar
+          </button>
 
         </div>
 
@@ -825,8 +919,7 @@ localStorage.removeItem('usuario');
 
       </div>
 
-
-      {/* CONTENIDO */} 
+      {/* CONTENIDO */}
 
       <div style={contentStyle}>
 
