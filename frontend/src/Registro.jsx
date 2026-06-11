@@ -6,26 +6,77 @@ function Registro({ volverLogin }) {
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+const [strength, setStrength] = useState('');
+
+  // =========================
+  // REGISTER
+  // =========================
 
   const register = async () => {
+
+    if (
+    !nombre ||
+    !correo ||
+    !password 
+  ) {
+    alert('Todos los campos son obligatorios');
+    return;
+  }
+
+  const emailRegex =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(correo)) {
+      alert('Correo electrónico inválido');
+      return;
+    }
+    if (strength === 'Débil') {
+      alert('La contraseña es muy débil');
+      return;
+    }
+
     try {
+
       await axios.post(
-        "https://proyecto-prestamos-bancarios.onrender.com/users",
+        'https://proyecto-prestamos-bancarios.onrender.com/users',
         {
-          nombre,
-          correo,
-          password,
+          nombre: nombre,
+          correo: correo,
+          password: password,
+          rol: 'empleado',
         }
       );
-
-      alert("Usuario registrado");
+      alert('Usuario registrado');
 
       volverLogin();
 
     } catch (error) {
-      alert("Error al registrar");
+      alert('Error al registrar');
     }
   };
+
+  const checkPasswordStrength = (value) => {
+
+  if (value.length < 6) {
+    setStrength('Débil');
+  } else if (
+    value.match(/[a-z]/) &&
+    value.match(/[0-9]/)
+  ) {
+    setStrength('Intermedia');
+  }
+
+  if (
+    value.match(/[A-Z]/) &&
+    value.match(/[0-9]/) &&
+    value.match(/[^A-Za-z0-9]/) &&
+    value.length >= 8
+  ) {
+    setStrength('Fuerte');
+  }
+
+};
 
   return (
     <div>
@@ -39,28 +90,28 @@ function Registro({ volverLogin }) {
         <input
           type="text"
           placeholder="Nombre"
-          value={nombreUsuario}
-          onChange={(e) => setNombreUsuario(e.target.value)}
-          style={inputStyle}
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          style={{ padding: '10px', width: '100%' }}
         />
 
         <input
           type="email"
           placeholder="Correo"
-          value={correoRegistro}
-          onChange={(e) => setCorreoRegistro(e.target.value)}
-          style={inputStyle}
+          value={correo}
+          onChange={(e) => setCorreo(e.target.value)}
+          style={{ padding: '10px', width: '100%' }}
         />
 
         <input
           type={showPassword ? 'text' : 'password'}
           placeholder="Contraseña"
-          value={passwordRegistro}
+          value={password}
           onChange={(e) => {
-            setPasswordRegistro(e.target.value);
+            setPassword(e.target.value);
             checkPasswordStrength(e.target.value);
           }}
-          style={inputStyle}
+          style={{ padding: '10px', width: '100%' }}
         />
 
         <p>
@@ -82,8 +133,8 @@ function Registro({ volverLogin }) {
         <br /><br />
 
         <button
-          onClick={registrarUsuario}
-          style={buttonStyle}
+          onClick={register}
+          style={{padding: '10px', width: '100%', cursor: 'pointer'}}
         >
           Registrarse
         </button>
@@ -95,7 +146,7 @@ function Registro({ volverLogin }) {
             color: '#1976d2',
             cursor: 'pointer'
           }}
-          onClick={() => setMostrarRegistro(false)}
+          onClick={() => volverLogin()}
         >
           ¿Ya tienes cuenta? Inicia sesión
         </p>

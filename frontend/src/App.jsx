@@ -76,11 +76,6 @@ const prestamosRechazados = loans.filter(
   // MENU
   const [section, setSection] = useState('dashboard');
 
-  // REGISTER
-  const [nombreUsuario, setNombreUsuario] = useState('');
-  const [correoRegistro, setCorreoRegistro] = useState('');
-  const [passwordRegistro, setPasswordRegistro] = useState('');
-
   // PASSWORD STRENGTH
   const [strength, setStrength] = useState('');
 
@@ -260,50 +255,6 @@ const createLoan = async (e) => {
 
   }
 };
-
-  // =========================
-  // REGISTER
-  // =========================
-
-  const register = async () => {
-
-    if (
-    !nombreUsuario ||
-    !correoRegistro ||
-    !passwordRegistro
-  ) {
-    alert('Todos los campos son obligatorios');
-    return;
-  }
-
-  const emailRegex =
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(correoRegistro)) {
-      alert('Correo electrónico inválido');
-      return;
-    }
-    if (strength === 'Débil') {
-      alert('La contraseña es muy débil');
-      return;
-    }
-
-    try {
-
-      await axios.post(
-        'https://proyecto-prestamos-bancarios.onrender.com/users',
-        {
-          nombre: nombreUsuario,
-          correo: correoRegistro,
-          password: passwordRegistro,
-          rol: 'empleado',
-        }
-      );
-      alert('Usuario registrado');
-    } catch (error) {
-      alert('Error al registrar');
-    }
-  };
 
   // =========================
   // SESSION
@@ -682,7 +633,7 @@ doc.text(
   // =========================
 
 
-  if (!isLogged && mostrarRegistro) {
+  if (!isLogged) {
 
     return (
 
