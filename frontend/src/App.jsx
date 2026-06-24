@@ -449,7 +449,7 @@ useEffect(() => {
   // =========================
 
   const deleteClient = async (id) => {
-
+    const token = localStorage.getItem('token');
     const confirmar = confirm(
       '¿Desea eliminar este cliente?'
     );
@@ -474,6 +474,9 @@ useEffect(() => {
       getClients();
 
     } catch (error) {
+      console.error(error);
+      
+      console.log(error.response);
 
       alert('Error al eliminar');
 
